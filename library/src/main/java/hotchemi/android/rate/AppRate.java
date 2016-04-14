@@ -11,6 +11,7 @@ import static hotchemi.android.rate.PreferenceHelper.getInstallDate;
 import static hotchemi.android.rate.PreferenceHelper.getIsAgreeShowDialog;
 import static hotchemi.android.rate.PreferenceHelper.getLaunchTimes;
 import static hotchemi.android.rate.PreferenceHelper.getRemindInterval;
+import static hotchemi.android.rate.PreferenceHelper.getRemindTimesLaunch;
 import static hotchemi.android.rate.PreferenceHelper.isFirstLaunch;
 import static hotchemi.android.rate.PreferenceHelper.setInstallDate;
 
@@ -29,6 +30,8 @@ public final class AppRate {
     private int remindInterval = 1;
 
     private boolean isDebug = false;
+
+    private int remindTimesInterval = 10;
 
     private AppRate(Context context) {
         this.context = context.getApplicationContext();
@@ -69,6 +72,11 @@ public final class AppRate {
 
     public AppRate setRemindInterval(int remindInterval) {
         this.remindInterval = remindInterval;
+        return this;
+    }
+
+    public AppRate setRemindTimesInterval(int remindTimesInterval) {
+        this.remindTimesInterval = remindTimesInterval;
         return this;
     }
 
@@ -178,6 +186,7 @@ public final class AppRate {
             setInstallDate(context);
         }
         PreferenceHelper.setLaunchTimes(context, getLaunchTimes(context) + 1);
+        PreferenceHelper.setRemindTimesLaunch(context, getRemindTimesLaunch(context) + 1);
     }
 
     public void showRateDialog(Activity activity) {
@@ -188,9 +197,9 @@ public final class AppRate {
 
     public boolean shouldShowRateDialog() {
         return getIsAgreeShowDialog(context) &&
-                isOverLaunchTimes() &&
-                isOverInstallDate() &&
-                isOverRemindDate();
+                ((isOverLaunchTimes() && isOverRemindTimes()) ||
+                (isOverInstallDate() && isOverRemindDate())
+                );
     }
 
     private boolean isOverLaunchTimes() {
@@ -203,6 +212,10 @@ public final class AppRate {
 
     private boolean isOverRemindDate() {
         return isOverDate(getRemindInterval(context), remindInterval);
+    }
+
+    private boolean isOverRemindTimes() {
+        return getRemindTimesLaunch(context) >= remindTimesInterval;
     }
 
     public boolean isDebug() {

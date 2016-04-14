@@ -18,6 +18,8 @@ final class PreferenceHelper {
 
     private static final String PREF_KEY_REMIND_INTERVAL = "android_rate_remind_interval";
 
+    private static final String PREF_KEY_REMIND_TIMES_LAUNCH = "android_rate_remind_times_launch";
+
     private PreferenceHelper() {
     }
 
@@ -63,6 +65,24 @@ final class PreferenceHelper {
         editor.remove(PREF_KEY_REMIND_INTERVAL);
         editor.putLong(PREF_KEY_REMIND_INTERVAL, new Date().getTime());
         editor.apply();
+    }
+
+    static void resetRemindTimesLaunch(Context context) {
+        SharedPreferences.Editor editor = getPreferencesEditor(context);
+        editor.remove(PREF_KEY_REMIND_TIMES_LAUNCH);
+        editor.putInt(PREF_KEY_REMIND_TIMES_LAUNCH, 0);
+        editor.apply();
+    }
+
+    static void setRemindTimesLaunch(Context context, int times) {
+        SharedPreferences.Editor editor = getPreferencesEditor(context);
+        editor.remove(PREF_KEY_REMIND_TIMES_LAUNCH);
+        editor.putInt(PREF_KEY_REMIND_TIMES_LAUNCH, times);
+        editor.apply();
+    }
+
+    static int getRemindTimesLaunch(Context context) {
+        return getPreferences(context).getInt(PREF_KEY_REMIND_TIMES_LAUNCH, 0);
     }
 
     static long getRemindInterval(Context context) {

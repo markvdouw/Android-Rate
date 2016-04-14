@@ -9,6 +9,7 @@ import android.view.View;
 
 import static hotchemi.android.rate.IntentHelper.createIntentForAmazonAppstore;
 import static hotchemi.android.rate.IntentHelper.createIntentForGooglePlay;
+import static hotchemi.android.rate.PreferenceHelper.resetRemindTimesLaunch;
 import static hotchemi.android.rate.PreferenceHelper.setAgreeShowDialog;
 import static hotchemi.android.rate.PreferenceHelper.setRemindInterval;
 import static hotchemi.android.rate.Utils.getDialogBuilder;
@@ -47,6 +48,7 @@ final class DialogManager {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     setRemindInterval(context);
+                    resetRemindTimesLaunch(context);
                     if (listener != null) listener.onClickButton(which);
                 }
             });
