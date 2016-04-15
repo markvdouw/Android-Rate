@@ -33,6 +33,10 @@ public final class AppRate {
 
     private int remindTimesInterval = 10;
 
+    private boolean dateReminderEnabled = true;
+
+    private boolean launchTimesReminderEnabled = true;
+
     private AppRate(Context context) {
         this.context = context.getApplicationContext();
     }
@@ -181,6 +185,16 @@ public final class AppRate {
         return this;
     }
 
+    public AppRate setDateReminderEnabled(boolean enabled) {
+        this.dateReminderEnabled = enabled;
+        return this;
+    }
+
+    public AppRate setLaunchTimesReminderEnabled(boolean enabled) {
+        this.launchTimesReminderEnabled = enabled;
+        return this;
+    }
+
     public void monitor() {
         if (isFirstLaunch(context)) {
             setInstallDate(context);
@@ -196,10 +210,9 @@ public final class AppRate {
     }
 
     public boolean shouldShowRateDialog() {
-        return getIsAgreeShowDialog(context) &&
-                ((isOverLaunchTimes() && isOverRemindTimes()) ||
-                (isOverInstallDate() && isOverRemindDate())
-                );
+        return getIsAgreeShowDialog(context) && (
+                (launchTimesReminderEnabled && isOverLaunchTimes() && isOverRemindTimes()) || (
+                        dateReminderEnabled && isOverInstallDate() && isOverRemindDate()));
     }
 
     private boolean isOverLaunchTimes() {
