@@ -215,6 +215,10 @@ public final class AppRate {
                         dateReminderEnabled && isOverInstallDate() && isOverRemindDate()));
     }
 
+    public int getNumberOfLaunchTimes(){
+        return getLaunchTimes(context);
+    }
+
     private boolean isOverLaunchTimes() {
         return getLaunchTimes(context) >= launchTimes;
     }
